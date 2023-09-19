@@ -1,9 +1,19 @@
+import React, {useEffect, useState} from "react";
+
 function App() {
-  return (
-    <div className="App">
-      Something
-    </div>
-  );
+    const [data, setData] = useState(null)
+
+    useEffect(() => {
+        fetch('/api')
+            .then(response => response.json())
+            .then(response => setData(response.message))
+    }, [])
+
+    return (
+        <>
+            {data}
+        </>
+    )
 }
 
 export default App;
