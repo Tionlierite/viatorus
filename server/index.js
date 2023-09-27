@@ -1,74 +1,19 @@
 const express = require("express")
+const router = require("./routes/index")
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT || 5000
 
 const app = express()
 
-app.listen(PORT, () => {
-	console.log(`Server is running on port ${PORT}`)
-})
+app.use(express.json())
+app.use("/api", router)
 
-app.get("/api", (req, res) => {
-	res.json([
-		{
-			id: 1,
-			city: "Gwenborough"
-		},
-		{
-			id: 2,
-			city: "Romaguera-Crona"
-		},
-		{
-			id: 3,
-			city: "Wisokyburgh"
-		},
-		{
-			id: 4,
-			city: "McKenziehaven"
-		},
-		{
-			id: 5,
-			city: "South Elvis"
-		},
-		{
-			id: 6,
-			city: "Roscoview"
-		},
-		{
-			id: 7,
-			city: "South Christy"
-		},
-		{
-			id: 8,
-			city: "Howemouth"
-		},
-		{
-			id: 9,
-			city: "Alliyaview"
-		},
-		{
-			id: 10,
-			city: "Bartholomobury"
-		},
-		{
-			id: 11,
-			city: "Lebsackbury"
-		},
-		{
-			id: 12,
-			city: "Penza"
-		},
-		{
-			id: 13,
-			city: "Klyazma"
-		},
-		{
-			id: 14,
-			city: "Moscow"
-		},
-		{
-			id: 15,
-			city: "Rabat"
-		}
-	])
-})
+async function startApp() {
+	try {
+		app.listen(PORT, () => console.log("SERVER STARTED ON PORT " + PORT))
+	} catch (e) {
+		console.log(e)
+	}
+}
+
+startApp()
