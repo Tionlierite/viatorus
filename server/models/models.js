@@ -2,7 +2,7 @@ const sequelize = require("../db")
 const { DataTypes } = require("sequelize")
 
 const User = sequelize.define(
-	"user",
+	"users",
 	{
 		user_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
 		user_name: { type: DataTypes.STRING, allowNull: false },
@@ -12,7 +12,7 @@ const User = sequelize.define(
 )
 
 const City = sequelize.define(
-	"city",
+	"cities",
 	{
 		city_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
 		user_name: { type: DataTypes.STRING, allowNull: false }
@@ -21,7 +21,7 @@ const City = sequelize.define(
 )
 
 const Country = sequelize.define(
-	"country",
+	"countries",
 	{
 		country_id: {
 			type: DataTypes.INTEGER,
@@ -34,24 +34,28 @@ const Country = sequelize.define(
 )
 
 const Visit = sequelize.define(
-	"visit",
+	"visits",
 	{
 		visit_id: {
 			type: DataTypes.INTEGER,
 			primaryKey: true,
 			autoIncrement: true
 		},
-		visit_date_from: { type: DataTypes.DATE, allowNull: false },
-		visit_date_to: { type: DataTypes.DATE, allowNull: false }
+		visit_date_from: { type: DataTypes.DATEONLY, allowNull: false },
+		visit_date_to: { type: DataTypes.DATEONLY, allowNull: false }
 	},
 	{ freezeTableName: true, timestamps: false }
 )
 
-Country.hasMany(City)
-City.belongsTo(Country)
+Country.hasMany(City, {
+	foreignKey: { name: "country_id", allowNull: false }
+})
+City.belongsTo(Country, {
+	foreignKey: { name: "country_id", allowNull: false }
+})
 
-City.belongsToMany(User, { through: Visit })
-User.belongsToMany(City, { through: Visit })
+City.belongsToMany(User, { through: Visit, foreignKey: "user_id" })
+User.belongsToMany(City, { through: Visit, foreignKey: "city_id" })
 
 module.exports = {
 	User,
