@@ -1,6 +1,11 @@
+const { City } = require("../models/models")
+
 class CityController {
-	async getAll(req, res) {
-		return res.json([{ message: "some" }])
+	async getCities(req, res) {
+		let { limit } = req.query
+		limit = limit || 5
+		const city = await City.findAndCountAll({ limit })
+		return res.json(city)
 	}
 }
 
