@@ -23,6 +23,7 @@
             "error",
             "unix"
         ],
+        "react/prop-types": "off",
         "quotes": [
             "error",
             "double",
