@@ -24,7 +24,7 @@ class UserController {
 			user_email: email,
 			user_password: hashedPassword
 		})
-		const token = generateJwt(user.id, user.email)
+		const token = generateJwt(user.user_id, user.user_email)
 		return res.json({ token })
 	}
 
