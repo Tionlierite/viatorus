@@ -6,7 +6,8 @@ const User = sequelize.define(
 	{
 		user_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
 		user_email: { type: DataTypes.STRING, allowNull: false },
-		user_password: { type: DataTypes.STRING, allowNull: false }
+		user_password: { type: DataTypes.STRING, allowNull: false },
+		user_role: { type: DataTypes.STRING, defaultValue: "USER" }
 	},
 	{ freezeTableName: true, timestamps: false }
 )
