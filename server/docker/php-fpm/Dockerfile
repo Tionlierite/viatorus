@@ -6,6 +6,9 @@ RUN apt-get update && apt-get install -y \
     curl \
     libpq-dev
 
+RUN pecl install xdebug && docker-php-ext-enable xdebug
+COPY ./docker/php-fpm/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+
 COPY ./ /var/www
 WORKDIR /var/www
 
