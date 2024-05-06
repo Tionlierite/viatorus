@@ -4,11 +4,10 @@ services:
     build:
       context: ./../
       dockerfile: ./docker/php-fpm/Dockerfile
-      args:
-        - PUID=${PUID}
-        - PGID=${PGID}
     volumes:
       - ./../:/var/www/
+    depends_on:
+      - postgres
 
   nginx:
     container_name: nginx
