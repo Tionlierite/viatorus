@@ -23,6 +23,12 @@ class Users
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
+    #[ORM\JoinTable(name: 'users_roles')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'user_id')]
+    #[ORM\InverseJoinColumn(name: 'role_id', referencedColumnName: 'role_id')]
+    #[ORM\ManyToMany(targetEntity: Roles::class)]
+    private ArrayCollection $user_roles;
+
     public function getUserId(): ?int
     {
         return $this->user_id;
@@ -63,4 +69,17 @@ class Users
 
         return $this;
     }
+
+    public function getUserRoles(): ArrayCollection
+    {
+        return $this->user_roles;
+    }
+
+    public function setUserRoles(ArrayCollection $user_roles): static
+    {
+        $this->user_roles = $user_roles;
+
+        return $this;
+    }
+
 }
