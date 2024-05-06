@@ -17,10 +17,10 @@ doctrine:
         auto_mapping: true
         mappings:
             App:
-                type: attribute
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Entity'
-                prefix: 'App\Entity'
+                type: attribute
+                dir: '%kernel.project_dir%/src/infrastructure/database/Entity'
+                prefix: 'App\infrastructure\database\Entity'
                 alias: App
         controller_resolver:
             auto_mapping: true
