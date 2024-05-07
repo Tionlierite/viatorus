@@ -16,6 +16,10 @@ class Cities
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\ManyToOne(targetEntity: Countries::class)]
+    #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'country_id')]
+    private Countries|null $countries = null;
+
     public function getId(): ?int
     {
         return $this->city_id;
@@ -29,6 +33,18 @@ class Cities
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getCountries(): ?Countries
+    {
+        return $this->countries;
+    }
+
+    public function setCountries(?Countries $countries): static
+    {
+        $this->countries = $countries;
 
         return $this;
     }
