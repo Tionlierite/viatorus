@@ -29,6 +29,18 @@ class Users
     #[ORM\ManyToMany(targetEntity: Roles::class)]
     private ArrayCollection $user_roles;
 
+    #[ORM\JoinTable(name: 'visited_places')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'user_id')]
+    #[ORM\InverseJoinColumn(name: 'city_id', referencedColumnName: 'city_id')]
+    #[ORM\ManyToMany(targetEntity: Cities::class)]
+    private ArrayCollection $visited_places;
+
+    #[ORM\JoinTable(name: 'goals')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'user_id')]
+    #[ORM\InverseJoinColumn(name: 'city_id', referencedColumnName: 'city_id')]
+    #[ORM\ManyToMany(targetEntity: Cities::class)]
+    private ArrayCollection $goals;
+
     public function getUserId(): ?int
     {
         return $this->user_id;
@@ -82,4 +94,27 @@ class Users
         return $this;
     }
 
+    public function getVisitedPlaces(): ArrayCollection
+    {
+        return $this->visited_places;
+    }
+
+    public function setVisitedPlaces(ArrayCollection $visited_places): static
+    {
+        $this->visited_places = $visited_places;
+
+        return $this;
+    }
+
+    public function getGoals(): ArrayCollection
+    {
+        return $this->goals;
+    }
+
+    public function setGoals(ArrayCollection $goals): static
+    {
+        $this->goals = $goals;
+
+        return $this;
+    }
 }
