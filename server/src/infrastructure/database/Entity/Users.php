@@ -4,10 +4,12 @@ namespace App\infrastructure\database\Entity;
 
 use App\infrastructure\database\Repository\UsersRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
-class Users
+class Users implements PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -27,19 +29,27 @@ class Users
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'user_id')]
     #[ORM\InverseJoinColumn(name: 'role_id', referencedColumnName: 'role_id')]
     #[ORM\ManyToMany(targetEntity: Roles::class)]
-    private ArrayCollection $user_roles;
+    private Collection $user_roles;
 
     #[ORM\JoinTable(name: 'visited_places')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'user_id')]
     #[ORM\InverseJoinColumn(name: 'city_id', referencedColumnName: 'city_id')]
     #[ORM\ManyToMany(targetEntity: Cities::class)]
-    private ArrayCollection $visited_places;
+    private Collection $visited_places;
 
     #[ORM\JoinTable(name: 'goals')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'user_id')]
     #[ORM\InverseJoinColumn(name: 'city_id', referencedColumnName: 'city_id')]
     #[ORM\ManyToMany(targetEntity: Cities::class)]
-    private ArrayCollection $goals;
+    private Collection $goals;
+
+
+    public function __construct()
+    {
+        $this->user_roles = new ArrayCollection();
+        $this->visited_places = new ArrayCollection();
+        $this->goals = new ArrayCollection();
+    }
 
     public function getUserId(): ?int
     {
