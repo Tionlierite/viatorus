@@ -10,6 +10,7 @@ The goals of this service is to:
 
 Additional goals:
 
+
 * To allow the user to see his travel story in a graphical representation, on a simple and minimalistic map.
 * Allow the user to register/authorize via Telegram, and interact with lists via Telegram bot.
 
