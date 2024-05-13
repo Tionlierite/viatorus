@@ -6,9 +6,12 @@ use App\infrastructure\database\Repository\UsersRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
+#[UniqueEntity(fields: ['email'])]
+#[UniqueEntity(fields: ['username'])]
 class Users implements PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -16,10 +19,10 @@ class Users implements PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $user_id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $username = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
