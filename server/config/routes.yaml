@@ -3,3 +3,7 @@ controllers:
         path: ../src/infrastructure/controllers
         namespace: App\infrastructure\controllers
     type: attribute
+
+not_found:
+    path: /{catchall}
+    controller: App\infrastructure\controllers\NotFoundController::notFound
