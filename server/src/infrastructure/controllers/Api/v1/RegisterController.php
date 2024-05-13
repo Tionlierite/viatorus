@@ -19,9 +19,13 @@ class RegisterController extends AbstractController
         $email = $request->query->get('email');
         $password = $request->query->get('password');
         $username = $request->query->get('username');
-
         if (!$email || !$password || !$username) {
             return $this->json(['message' => 'Missing required parameters'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $existingUser = $entityManager->getRepository(Users::class)->findOneBy(['email' => $email]);
+        if ($existingUser){
+            return $this->json(['message' => 'User with this credentials already exist'], Response::HTTP_CONFLICT);
         }
 
         $user = new Users();
@@ -34,6 +38,6 @@ class RegisterController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        return $this->json(['message' => 'User created successfully']);
+        return $this->json(['message' => 'User created successfully'], Response::HTTP_OK);
     }
 }
