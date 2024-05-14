@@ -3,29 +3,33 @@
 namespace App\infrastructure\database\Entity;
 
 use App\infrastructure\database\Repository\UsersRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+
+
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Uid\Ulid;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
-#[UniqueEntity(fields: ['email'])]
-#[UniqueEntity(fields: ['username'])]
-class Users implements PasswordAuthenticatedUserInterface
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $user_id = null;
+    #[ORM\Column(type: UlidType::NAME, unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.ulid_generator')]
+    private ?Ulid $user_id = null;
 
     #[ORM\Column(length: 255, unique: true)]
     private ?string $username = null;
 
-    #[ORM\Column(length: 255, unique: true)]
+    #[ORM\Column(length: 180)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column]
     private ?string $password = null;
 
     #[ORM\JoinTable(name: 'users_roles')]
@@ -46,7 +50,6 @@ class Users implements PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Cities::class)]
     private Collection $goals;
 
-
     public function __construct()
     {
         $this->user_roles = new ArrayCollection();
@@ -54,7 +57,7 @@ class Users implements PasswordAuthenticatedUserInterface
         $this->goals = new ArrayCollection();
     }
 
-    public function getUserId(): ?int
+    public function getId(): ?Ulid
     {
         return $this->user_id;
     }
@@ -83,24 +86,13 @@ class Users implements PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPassword(): ?string
+    public function getRoles(): array
     {
-        return $this->password;
+        $user_roles[] = $this->user_roles;
+        return $user_roles;
     }
 
-    public function setPassword(string $password): static
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    public function getUserRoles(): ArrayCollection
-    {
-        return $this->user_roles;
-    }
-
-    public function setUserRoles(ArrayCollection $user_roles): static
+    public function setRoles(ArrayCollection $user_roles): static
     {
         $this->user_roles = $user_roles;
 
@@ -129,5 +121,28 @@ class Users implements PasswordAuthenticatedUserInterface
         $this->goals = $goals;
 
         return $this;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): static
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 }
