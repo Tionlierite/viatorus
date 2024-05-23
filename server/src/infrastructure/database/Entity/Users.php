@@ -57,7 +57,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         $this->goals = new ArrayCollection();
     }
 
-    public function getId(): ?Ulid
+    public function getUserId(): ?Ulid
     {
         return $this->user_id;
     }

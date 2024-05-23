@@ -16,7 +16,7 @@ class Countries
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    public function getId(): ?int
+    public function getCountryId(): ?int
     {
         return $this->country_id;
     }

@@ -20,7 +20,7 @@ class Cities
     #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'country_id')]
     private Countries|null $countries = null;
 
-    public function getId(): ?int
+    public function getCityId(): ?int
     {
         return $this->city_id;
     }
