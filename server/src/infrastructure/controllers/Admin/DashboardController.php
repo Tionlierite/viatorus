@@ -29,9 +29,9 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::section('Entities');
-        yield MenuItem::linkToCrud('Countries', 'fas fa-list', Countries::class);
-        yield MenuItem::linkToCrud('Cities', 'fas fa-list', Cities::class);
+        yield MenuItem::linkToCrud('Countries', 'fas fa-globe', Countries::class);
+        yield MenuItem::linkToCrud('Cities', 'fas fa-city', Cities::class);
         yield MenuItem::section('Users Management');
-        yield MenuItem::linkToCrud('Users', 'fas fa-list', Users::class);
+        yield MenuItem::linkToCrud('Users', 'fas fa-user', Users::class);
     }
 }
