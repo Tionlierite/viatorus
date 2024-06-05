@@ -1,5 +1,12 @@
+import React from "react"
+import { Pages } from "../pages"
+
 function App() {
-	return <></>
+	return (
+		<>
+			<Pages />
+		</>
+	)
 }
 
 export default App
