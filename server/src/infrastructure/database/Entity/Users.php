@@ -4,7 +4,6 @@ namespace App\infrastructure\database\Entity;
 
 use App\infrastructure\database\Repository\UsersRepository;
 
-
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -101,9 +100,11 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $roles;
     }
 
-    public function setUserRoles(ArrayCollection $user_roles): static
+    public function setUserRoles(Roles $user_role): static
     {
-        $this->user_roles = $user_roles;
+        if (!$this->user_roles->contains($user_role)) {
+            $this->user_roles->add($user_role);
+        }
 
         return $this;
     }

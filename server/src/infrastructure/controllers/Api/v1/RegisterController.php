@@ -2,6 +2,7 @@
 
 namespace App\infrastructure\controllers\Api\v1;
 
+use App\infrastructure\database\Entity\Roles;
 use App\infrastructure\database\Entity\Users;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,6 +36,10 @@ class RegisterController extends AbstractController
         }
 
         $user = new Users();
+        $role_user = $entityManager->getRepository(Roles::class)->findOneBy(['name' => 'ROLE_USER']);
+        if ($role_user !== null) {
+            $user->setUserRoles($role_user);
+        }
         $user->setEmail($email);
         $user->setPassword(
             $passwordHasher->hashPassword($user, $password)
