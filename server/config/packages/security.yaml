@@ -32,6 +32,10 @@ security:
             logout:
                 path: admin_logout
                 target: admin_login
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
+                path: /admin
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
