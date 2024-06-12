@@ -30,9 +30,8 @@ security:
                 check_path: admin_login
                 enable_csrf: true
             logout:
-                path: app_logout
-                # where to redirect after logout
-                # target: app_any_route
+                path: admin_logout
+                target: admin_login
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
