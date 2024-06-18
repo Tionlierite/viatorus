@@ -8,7 +8,7 @@ const initialState: ModalState = {
 	isOpen: false
 }
 
-const modalSlice = createSlice({
+const SignUpModalSlice = createSlice({
 	name: "SignUpModal",
 	initialState,
 	reducers: {
@@ -21,6 +21,6 @@ const modalSlice = createSlice({
 	}
 })
 
-export const { openModal, closeModal } = modalSlice.actions
+export const { openModal, closeModal } = SignUpModalSlice.actions
 
-export default modalSlice.reducer
+export default SignUpModalSlice.reducer
