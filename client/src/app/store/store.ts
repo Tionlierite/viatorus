@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit"
 
-import modalReducer from "../../features/SignUpButton/model/SignUpModalSlice.ts"
+import SignUpModalReducer from "../../features/SignUpButton/model/SignUpModalSlice.ts"
+import SignInModalReducer from "../../features/SignInButton/model/SignInModalSlice.ts"
 
 export const store = configureStore({
 	reducer: {
-		SignUpModal: modalReducer
+		SignUpModal: SignUpModalReducer,
+		SignInModal: SignInModalReducer
 	}
 })
 
