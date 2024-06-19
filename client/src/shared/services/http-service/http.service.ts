@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios"
 import { logger } from "../logging-service"
+import { toast } from "react-toastify"
 axios.interceptors.response.use(
 	res => res,
 	function (error: AxiosError) {
@@ -9,8 +10,8 @@ axios.interceptors.response.use(
 			error.response.status < 500
 
 		if (!expectedErrors) {
+			toast("Unexpected Error")
 			logger.log(error)
-			console.log("Unexpected Error")
 		}
 		return Promise.reject(error)
 	}
