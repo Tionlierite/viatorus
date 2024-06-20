@@ -21,9 +21,13 @@ class RegisterController extends AbstractController
                              EntityManagerInterface $entityManager,
                              JWTTokenManagerInterface $jwtManager): Response
     {
-        $email = $request->query->get('email');
-        $password = $request->query->get('password');
-        $username = $request->query->get('username');
+        $data = json_decode($request->getContent(), true);
+
+        $payload = $data['payload'];
+        $email = $payload['email'] ?? null;
+        $password = $payload['password'] ?? null;
+        $username = $payload['username'] ?? null;
+
         if (!$email || !$password || !$username) {
             return $this->json(['message' => 'Missing required parameters'],
                 Response::HTTP_BAD_REQUEST);

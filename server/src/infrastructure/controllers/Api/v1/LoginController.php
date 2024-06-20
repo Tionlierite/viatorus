@@ -14,14 +14,17 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class LoginController extends AbstractController
 {
-    #[Route('/api/v1/login', name: 'api_v1_login', methods: ['GET'])]
+    #[Route('/api/v1/login', name: 'api_v1_login', methods: ['POST'])]
     public function login(Request $request,
                           UserPasswordHasherInterface $passwordHasher,
                           EntityManagerInterface $entityManager,
                           JWTTokenManagerInterface $jwtManager): Response
     {
-        $email = $request->query->get('email');
-        $password = $request->query->get('password');
+        $data = json_decode($request->getContent(), true);
+
+        $payload = $data['payload'];
+        $email = $payload['email'] ?? null;
+        $password = $payload['password'] ?? null;
         if (!$email || !$password) {
             return $this->json(['message' => 'Missing required parameters'],
                 Response::HTTP_BAD_REQUEST);
