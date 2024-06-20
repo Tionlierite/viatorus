@@ -5,9 +5,9 @@ import { BrowserRouter } from "react-router-dom"
 import App from "./app/App.tsx"
 import { Provider } from "react-redux"
 import { store } from "./app/store/store.ts"
-import { logger } from "./shared/services/logging-service"
+// import { logger } from "./shared/services/logging-service"
 
-logger.init()
+// logger.init()
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
 	<BrowserRouter>
