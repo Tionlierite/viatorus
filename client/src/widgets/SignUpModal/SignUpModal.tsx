@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { boolean, object, ref, string, ValidationError } from "yup"
+import { ValidationError } from "yup"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"
 
@@ -9,51 +9,25 @@ import { LandingPageModalView } from "../../shared/ui/Modals/LandingPageModalVie
 import { RootState } from "../../app/store/store.ts"
 import { closeModal } from "../../features/SignUpButton/model/SignUpModalSlice.ts"
 import { httpService } from "../../shared/services/http-service"
-
-interface formData {
-	username: string
-	email: string
-	password: string
-	passwordRepeat: string
-	terms: boolean
-}
+import {
+	SignUpFormData,
+	validationSchemas
+} from "../../shared/services/validation-service"
 
 export const SignUpModal = () => {
-	const [data, setData] = useState<formData>({
+	const [data, setData] = useState<SignUpFormData>({
 		username: "",
 		email: "",
 		password: "",
 		passwordRepeat: "",
 		terms: false
 	})
-	const [errors, setErrors] = useState<Partial<formData>>({})
+	const [errors, setErrors] = useState<Partial<SignUpFormData>>({})
 	const isValid: boolean = Object.keys(errors).length === 0
 	const isModalOpen = useSelector(
 		(state: RootState) => state.SignUpModal.isOpen
 	)
-	const validateSchema = object({
-		terms: boolean().isTrue("You must agree to the terms"),
-		passwordRepeat: string()
-			.oneOf([ref("password")], "Passwords must match")
-			.required("Repeat password is required"),
-		password: string()
-			.matches(
-				/(?=.*[A-Z])/,
-				"The password must contain at least one capital letter"
-			)
-			.matches(/(?=.*[0-9])/, "The password must contain at least one number")
-			.matches(
-				/(?=.*[!@#$%^&*])/,
-				"Password must contain at least one special symbol: !@#$%^&*"
-			)
-			.matches(/(?=.{8,})/, "The password must be at least 8 characters long")
-			.required("Password is required"),
-		email: string()
-			.matches(/^\S+@\S+\.\S+$/g, "Email is incorrect")
-			.required("Email is required"),
-		username: string().required("Username is required")
-	})
-
+	const validateSchema = validationSchemas.register
 	const dispatch = useDispatch()
 	const handleCloseModal = () => {
 		dispatch(closeModal())

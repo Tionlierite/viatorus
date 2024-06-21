@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { object, string, ValidationError } from "yup"
+import { ValidationError } from "yup"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"
 
@@ -9,39 +9,22 @@ import { LandingPageModalView } from "../../shared/ui/Modals/LandingPageModalVie
 import { RootState } from "../../app/store/store.ts"
 import { closeModal } from "../../features/SignInButton/model/SignInModalSlice.ts"
 import { httpService } from "../../shared/services/http-service"
-
-interface formData {
-	email: string
-	password: string
-}
+import {
+	SignInFormData,
+	validationSchemas
+} from "../../shared/services/validation-service"
 
 export const SignInModal = () => {
-	const [data, setData] = useState<formData>({
+	const [data, setData] = useState<SignInFormData>({
 		email: "",
 		password: ""
 	})
-	const [errors, setErrors] = useState<Partial<formData>>({})
+	const [errors, setErrors] = useState<Partial<SignInFormData>>({})
 	const isValid: boolean = Object.keys(errors).length === 0
 	const isModalOpen = useSelector(
 		(state: RootState) => state.SignInModal.isOpen
 	)
-	const validateSchema = object({
-		password: string()
-			.matches(
-				/(?=.*[A-Z])/,
-				"The password must contain at least one capital letter"
-			)
-			.matches(/(?=.*[0-9])/, "The password must contain at least one number")
-			.matches(
-				/(?=.*[!@#$%^&*])/,
-				"Password must contain at least one special symbol: !@#$%^&*"
-			)
-			.matches(/(?=.{8,})/, "The password must be at least 8 characters long")
-			.required("Password is required"),
-		email: string()
-			.matches(/^\S+@\S+\.\S+$/g, "Email is incorrect")
-			.required("Email is required")
-	})
+	const validateSchema = validationSchemas.login
 
 	const dispatch = useDispatch()
 	const handleCloseModal = () => {
