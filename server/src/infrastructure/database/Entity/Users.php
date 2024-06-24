@@ -95,7 +95,9 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
             return $role->getName();
         })->toArray();
 
-        $roles[] = 'ROLE_USER';
+        if (!in_array('ROLE_USER', $roles)) {
+            $roles[] = 'ROLE_USER';
+        }
 
         return $roles;
     }
