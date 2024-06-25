@@ -35,6 +35,18 @@ export const authService = {
 	},
 	login: async (content: { email: string; password: string }) => {
 		const { data } = await httpService.post(loginEndpoint, content)
-		return data
+		localStorage.setItem("access_token", data.access_token)
+
+		const decodedToken: DecodedToken = jwtDecode(data.access_token)
+		const user = {
+			id: decodedToken.user_id,
+			username: decodedToken.username,
+			email: decodedToken.email,
+			roles: decodedToken.roles
+		}
+
+		store.dispatch(setUser(user))
+		store.dispatch(setAccessToken(data.access_token))
+		return data.message
 	}
 }
