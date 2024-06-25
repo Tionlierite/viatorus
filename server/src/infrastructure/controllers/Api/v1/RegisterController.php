@@ -23,12 +23,10 @@ class RegisterController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        $payload = $data['payload'];
-        $email = $payload['email'] ?? null;
-        $password = $payload['password'] ?? null;
-        $username = $payload['username'] ?? null;
-
-        if (!$email || !$password || !$username) {
+        $email = $data['email'] ?? null;
+        $password = $data['password'] ?? null;
+        $username = $data['username'] ?? null;
+        if (!$email && !$password && !$username) {
             return $this->json(['message' => 'Missing required parameters'],
                 Response::HTTP_BAD_REQUEST);
         }
@@ -56,7 +54,9 @@ class RegisterController extends AbstractController
             ['expires_in' => '3600',
             'user_id' => $user->getUserId()->toRfc4122(), # 01HZQTM6EY3Y23J57HN9207V99 -> 018fee3d-8585-7020-77e6-e68c66e393b2
             'email' => $email]);
-        return $this->json(['message' => 'User created successfully',
+        return $this->json(
+            ['code' => 201,
+            'message' => 'User created successfully',
             'access_token' => $token],
             Response::HTTP_CREATED);
     }
