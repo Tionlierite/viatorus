@@ -30,13 +30,13 @@ interface SignUpFormProps {
 	isValid: boolean
 }
 
-export const SignUpModalFields: React.FC<SignUpFormProps> = ({
+export const SignUpModalFields = ({
 	data,
 	errors,
 	onChange,
 	onSubmit,
 	isValid
-}) => {
+}: SignUpFormProps) => {
 	const signUpFields: Array<{
 		label: string
 		name: keyof Omit<SignUpFormProps["data"], "terms">

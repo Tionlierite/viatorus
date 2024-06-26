@@ -23,13 +23,13 @@ interface SignInFormProps {
 	isValid: boolean
 }
 
-export const SignInModalFields: React.FC<SignInFormProps> = ({
+export const SignInModalFields = ({
 	data,
 	errors,
 	onChange,
 	onSubmit,
 	isValid
-}) => {
+}: SignInFormProps) => {
 	const signUpFields: Array<{
 		label: string
 		name: keyof SignInFormProps["data"]
