@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
-import { ValidationError } from "yup"
 import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { ValidationError } from "yup"
 import { toast } from "react-toastify"
 
 import { SignUpModalFields } from "../../features/SignUpModalFields"
@@ -8,11 +9,11 @@ import { LandingPageModalView } from "../../shared/ui/Modals/LandingPageModalVie
 
 import { RootState } from "../../app/store/store.ts"
 import { closeModal } from "../../features/SignUpButton/model/SignUpModalSlice.ts"
-import { httpService } from "../../shared/services/http-service"
 import {
 	SignUpFormData,
 	validationSchemas
 } from "../../shared/services/validation-service"
+import { authService } from "../../shared/services/auth-service"
 
 export const SignUpModal = () => {
 	const [data, setData] = useState<SignUpFormData>({
@@ -29,6 +30,7 @@ export const SignUpModal = () => {
 	)
 	const validateSchema = validationSchemas.register
 	const dispatch = useDispatch()
+	const navigate = useNavigate()
 	const handleCloseModal = () => {
 		dispatch(closeModal())
 	}
@@ -51,10 +53,9 @@ export const SignUpModal = () => {
 			position: "top-center"
 		})
 
-		httpService
-			.post("http://localhost:8080/api/v1/register", { payload })
-			.then(res => {
-				console.log(res.data)
+		authService
+			.register(payload)
+			.then(() => {
 				toast.update(toastId, {
 					render: "Successfully!",
 					position: "top-center",
@@ -62,6 +63,7 @@ export const SignUpModal = () => {
 					isLoading: false,
 					autoClose: 3000
 				})
+				navigate("workspace")
 			})
 			.catch(error => {
 				console.error("Error during registration:", error)
