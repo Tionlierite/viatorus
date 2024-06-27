@@ -1,14 +1,47 @@
+import { useLocation } from "react-router-dom"
+
 import { SignUpButton } from "../../features/SignUpButton"
 import { SignInButton } from "../../features/SignInButton"
-
+import { NavbarLinks } from "../../features/NavbarLinks"
 // TODO: Do something with it.
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 import Logo from "../../shared/media/ViatorusLogo.svg"
 
+interface NavbarLink {
+	name: string
+	path: string
+	isSelected: boolean
+}
+
 export const LandingPageNavBar = () => {
-	const linkClasses: string =
-		"text-viat-primary font-viat-body hover:text-viat-accent font-bold"
+	const location = useLocation()
+	const navbarLinksConfig: NavbarLink[] = [
+		{
+			name: "HOME",
+			path: "/"
+		},
+		{
+			name: "FEATURES",
+			path: "/features"
+		},
+		{
+			name: "TIPS",
+			path: "/tips"
+		},
+		{
+			name: "COMMUNITY",
+			path: "/community"
+		},
+		{
+			name: "SHOP",
+			path: "/shop"
+		}
+	].map(link => ({
+		...link,
+		isSelected: location.pathname === link.path
+	}))
+
 	return (
 		<header className='relative h-20'>
 			<div className='container mx-auto px-24 h-full'>
@@ -16,24 +49,7 @@ export const LandingPageNavBar = () => {
 					<div className='flex items-center'>
 						<img src={Logo} alt='Viatorus Logo' className='h-10 w-auto' />
 					</div>
-					<nav className='flex space-x-8'>
-						{/*TODO: Make actual links*/}
-						<a href='' className={linkClasses}>
-							HOME
-						</a>
-						<a href='' className={linkClasses}>
-							FEATURES
-						</a>
-						<a href='' className={linkClasses}>
-							TIPS
-						</a>
-						<a href='' className={linkClasses}>
-							COMMUNITY
-						</a>
-						<a href='' className={linkClasses}>
-							SHOP
-						</a>
-					</nav>
+					<NavbarLinks linksConfig={navbarLinksConfig} />
 					<div className='flex space-x-4'>
 						<SignInButton />
 						<SignUpButton />
