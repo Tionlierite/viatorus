@@ -4,9 +4,6 @@ import { LandingPageModalLayout } from "../../shared/ui/Layouts/LandingPageModal
 import { InputField } from "../../shared/ui/InputField"
 import { ButtonContained } from "../../shared/ui/Buttons/ButtonContained"
 
-// TODO: Do something with it.
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
 import Logo from "../../shared/media/ViatorusLogo.svg"
 
 interface SignInFormProps {
@@ -49,7 +46,11 @@ export const SignInModalFields = ({
 	return (
 		<>
 			<div className='col-span-10 col-start-2'>
-				<img src={Logo} alt='Viatorus Logo' className='h-10 w-auto' />
+				<img
+					src={Logo.toString()}
+					alt='Viatorus Logo'
+					className='h-10 w-auto'
+				/>
 			</div>
 			<LandingPageModalLayout message='Log inside your story'>
 				<form className='flex flex-col space-y-4' onSubmit={onSubmit}>

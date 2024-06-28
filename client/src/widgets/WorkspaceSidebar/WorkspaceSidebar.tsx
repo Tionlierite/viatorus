@@ -3,25 +3,10 @@ import { useLocation } from "react-router-dom"
 import { ProfileBox } from "../../features/SidebarFeatures/ProfileBox"
 import { SidebarLinks } from "../../features/SidebarFeatures/SidebarLinks"
 
-// TODO: Do something with it.
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
 import Logo from "../../shared/media/ViatorusLogo.svg"
-// TODO: Do something with it.
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
 import Home from "../../shared/media/Home.svg"
-// TODO: Do something with it.
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
 import HomeAlt from "../../shared/media/HomeAlt.svg"
-// TODO: Do something with it.
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
 import Feed from "../../shared/media/Feed.svg"
-// TODO: Do something with it.
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
 import FeedAlt from "../../shared/media/FeedAlt.svg"
 
 interface SidebarLink {
@@ -43,8 +28,8 @@ export const WorkspaceSidebar = () => {
 			name: "My Lists",
 			path: "/workspace",
 			icon: {
-				img: Home,
-				imgAlt: HomeAlt,
+				img: Home.toString(),
+				imgAlt: HomeAlt.toString(),
 				altName: "Home Icon",
 				classes: "h-5 w-5"
 			}
@@ -53,8 +38,8 @@ export const WorkspaceSidebar = () => {
 			name: "Feed",
 			path: "/workspace/feed",
 			icon: {
-				img: Feed,
-				imgAlt: FeedAlt,
+				img: Feed.toString(),
+				imgAlt: FeedAlt.toString(),
 				altName: "Feed Icon",
 				classes: "h-5 w-5"
 			}
@@ -66,7 +51,11 @@ export const WorkspaceSidebar = () => {
 
 	return (
 		<div className='bg-viat-bg-shade col-span-3 h-screen sticky top-0 px-6'>
-			<img src={Logo} alt='Viatorus Logo' className='h-10 w-auto mt-4' />
+			<img
+				src={Logo.toString()}
+				alt='Viatorus Logo'
+				className='h-10 w-auto mt-4'
+			/>
 			<ProfileBox />
 			<SidebarLinks linksConfig={sidebarLinksConfig} />
 		</div>

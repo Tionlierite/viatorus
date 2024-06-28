@@ -3,9 +3,7 @@ import { useLocation } from "react-router-dom"
 import { SignUpButton } from "../../features/SignUpButton"
 import { SignInButton } from "../../features/SignInButton"
 import { NavbarLinks } from "../../features/NavbarLinks"
-// TODO: Do something with it.
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
+
 import Logo from "../../shared/media/ViatorusLogo.svg"
 
 interface NavbarLink {
@@ -47,7 +45,11 @@ export const LandingPageNavBar = () => {
 			<div className='container mx-auto px-24 h-full'>
 				<div className='flex items-center justify-between h-full'>
 					<div className='flex items-center'>
-						<img src={Logo} alt='Viatorus Logo' className='h-10 w-auto' />
+						<img
+							src={Logo.toString()}
+							alt='Viatorus Logo'
+							className='h-10 w-auto'
+						/>
 					</div>
 					<NavbarLinks linksConfig={navbarLinksConfig} />
 					<div className='flex space-x-4'>
