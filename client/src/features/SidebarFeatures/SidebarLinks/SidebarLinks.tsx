@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom"
+
 interface SidebarLink {
 	name: string
 	path: string
@@ -21,11 +23,11 @@ export const SidebarLinks = ({ linksConfig }: SidebarLinksProps) => {
 			: "text-viat-secondary"
 	}
 	return (
-		<div className='ml-4 mt-8 space-y-8'>
+		<nav className='ml-4 mt-8 space-y-8'>
 			{linksConfig.map(link => (
-				<a
+				<NavLink
 					key={link.path}
-					href={link.path}
+					to={link.path}
 					className={`flex items-center space-x-2 ${handleTextClasses(link.isSelected)}`}
 				>
 					<img
@@ -38,8 +40,8 @@ export const SidebarLinks = ({ linksConfig }: SidebarLinksProps) => {
 					<span className='font-viat-body text-viat-size-body'>
 						{link.name}
 					</span>
-				</a>
+				</NavLink>
 			))}
-		</div>
+		</nav>
 	)
 }
