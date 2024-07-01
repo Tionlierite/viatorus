@@ -1,10 +1,10 @@
 import React from "react"
 
-import { LandingPageModalLayout } from "../../shared/ui/Layouts/LandingPageModalLayout"
-import { InputField } from "../../shared/ui/InputField"
-import { ButtonContained } from "../../shared/ui/Buttons/ButtonContained"
+import { LandingPageModalLayout } from "../../../shared/ui/Layouts/LandingPageModalLayout"
+import { InputField } from "../../../shared/ui/InputField"
+import { ButtonContained } from "../../../shared/ui/Buttons/ButtonContained"
 
-import Logo from "../../shared/media/ViatorusLogo.svg"
+import Logo from "../../../shared/media/ViatorusLogo.svg"
 
 interface SignInFormProps {
 	data: {

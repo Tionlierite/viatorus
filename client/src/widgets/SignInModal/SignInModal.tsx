@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { ValidationError } from "yup"
 import { toast } from "react-toastify"
 
-import { SignInModalFields } from "../../features/SignInModalFields"
+import { SignInModalFields } from "../../features/NavbarFeatures/SignInModalFields"
 import { LandingPageModalView } from "../../shared/ui/Modals/LandingPageModalView"
 
 import { RootState } from "../../app/store/store.ts"

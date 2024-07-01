@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom"
 
 import { SignUpButton } from "../../features/SignUpButton"
 import { SignInButton } from "../../features/SignInButton"
-import { NavbarLinks } from "../../features/NavbarLinks"
+import { NavbarLinks } from "../../features/NavbarFeatures/NavbarLinks"
 
 import Logo from "../../shared/media/ViatorusLogo.svg"
 
