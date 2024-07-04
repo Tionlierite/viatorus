@@ -37,16 +37,10 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Roles::class)]
     private Collection $user_roles;
 
-    #[ORM\JoinTable(name: 'visited_places')]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'user_id')]
-    #[ORM\InverseJoinColumn(name: 'city_id', referencedColumnName: 'city_id')]
-    #[ORM\ManyToMany(targetEntity: Cities::class)]
+    #[ORM\OneToMany(targetEntity: VisitedPlaces::class, mappedBy: 'user')]
     private Collection $visited_places;
 
-    #[ORM\JoinTable(name: 'goals')]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'user_id')]
-    #[ORM\InverseJoinColumn(name: 'city_id', referencedColumnName: 'city_id')]
-    #[ORM\ManyToMany(targetEntity: Cities::class)]
+    #[ORM\OneToMany(targetEntity: Goals::class, mappedBy: 'user')]
     private Collection $goals;
 
     public function __construct()
