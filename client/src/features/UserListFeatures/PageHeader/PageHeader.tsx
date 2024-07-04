@@ -21,7 +21,11 @@ export const PageHeader = () => {
 					My Lists
 				</p>
 				<AddToListButton />
-				<WorkspacePageModalView isOpen={isModalOpen} onClose={handleCloseModal}>
+				<WorkspacePageModalView
+					titleMessage={"Where have you been?"}
+					isOpen={isModalOpen}
+					onClose={handleCloseModal}
+				>
 					<AddToListModalFields />
 				</WorkspacePageModalView>
 			</div>
