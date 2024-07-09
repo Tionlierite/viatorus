@@ -3,26 +3,32 @@
 namespace App\infrastructure\database\Entity;
 
 use App\infrastructure\database\Repository\UsersRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Uid\Ulid;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
-class Users implements PasswordAuthenticatedUserInterface
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $user_id = null;
+    #[ORM\Column(type: UlidType::NAME, unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.ulid_generator')]
+    private ?Ulid $user_id = null;
 
     #[ORM\Column(length: 255)]
     private ?string $username = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 180)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column]
     private ?string $password = null;
 
     #[ORM\JoinTable(name: 'users_roles')]
@@ -31,18 +37,11 @@ class Users implements PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Roles::class)]
     private Collection $user_roles;
 
-    #[ORM\JoinTable(name: 'visited_places')]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'user_id')]
-    #[ORM\InverseJoinColumn(name: 'city_id', referencedColumnName: 'city_id')]
-    #[ORM\ManyToMany(targetEntity: Cities::class)]
+    #[ORM\OneToMany(targetEntity: VisitedPlaces::class, mappedBy: 'user')]
     private Collection $visited_places;
 
-    #[ORM\JoinTable(name: 'goals')]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'user_id')]
-    #[ORM\InverseJoinColumn(name: 'city_id', referencedColumnName: 'city_id')]
-    #[ORM\ManyToMany(targetEntity: Cities::class)]
+    #[ORM\OneToMany(targetEntity: Goals::class, mappedBy: 'user')]
     private Collection $goals;
-
 
     public function __construct()
     {
@@ -51,7 +50,7 @@ class Users implements PasswordAuthenticatedUserInterface
         $this->goals = new ArrayCollection();
     }
 
-    public function getUserId(): ?int
+    public function getUserId(): ?Ulid
     {
         return $this->user_id;
     }
@@ -80,26 +79,28 @@ class Users implements PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): static
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    public function getUserRoles(): ArrayCollection
+    public function getUserRoles(): Collection
     {
         return $this->user_roles;
     }
-
-    public function setUserRoles(ArrayCollection $user_roles): static
+    public function getRoles(): array
     {
-        $this->user_roles = $user_roles;
+        $roles = $this->getUserRoles()->map(function($role) {
+            return $role->getName();
+        })->toArray();
+
+        if (!in_array('ROLE_USER', $roles)) {
+            $roles[] = 'ROLE_USER';
+        }
+
+        return $roles;
+    }
+
+    public function setUserRoles(Roles $user_role): static
+    {
+        if (!$this->user_roles->contains($user_role)) {
+            $this->user_roles->add($user_role);
+        }
 
         return $this;
     }
@@ -126,5 +127,28 @@ class Users implements PasswordAuthenticatedUserInterface
         $this->goals = $goals;
 
         return $this;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): static
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 }

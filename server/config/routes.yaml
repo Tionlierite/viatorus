@@ -3,3 +3,10 @@ controllers:
         path: ../src/infrastructure/controllers
         namespace: App\infrastructure\controllers
     type: attribute
+
+api_login_check:
+    path: /api/login_check
+
+#not_found:
+#    path: /{catchall}
+#    controller: App\infrastructure\controllers\NotFoundController::notFound

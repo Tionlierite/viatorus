@@ -4,14 +4,45 @@ security:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        users_in_memory: { memory: null }
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\infrastructure\database\Entity\Users
+                property: email
     firewalls:
+        login:
+            pattern: ^/api/login
+            stateless: true
+            provider: app_user_provider
+            json_login:
+                check_path: /api/login
+                username_path: email
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        api:
+            pattern: ^/api/
+            stateless: true
+            jwt: ~
+        admin:
+            pattern: ^/admin
+            form_login:
+                login_path: admin_login
+                check_path: admin_login
+                enable_csrf: true
+                default_target_path: /admin
+            logout:
+                path: admin_logout
+                target: admin_login
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
+                path: /admin
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             lazy: true
-            provider: users_in_memory
+            provider: app_user_provider
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -22,8 +53,8 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/admin/login, roles: PUBLIC_ACCESS }
+        - { path: ^/admin, roles: ROLE_ADMIN }
 
 when@test:
     security:
