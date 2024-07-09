@@ -1,19 +1,16 @@
-// import { useNavigate } from "react-router-dom"
-
 import UserIcon from "../../shared/media/Profile.svg"
 import { httpService } from "../../shared/services/http-service"
 
 export const UserFeedPage = () => {
-	// const navigate = useNavigate()
 	const handleClick = async (postId: number) => {
 		try {
 			const response = await httpService.post(`service-click`, {
 				post_id: postId
 			})
 
-			/*			if (response.status === 200) {
+			if (response.status === 200) {
 				window.location.href = "https://www.aeroflot.ru/ru-ru"
-			}*/
+			}
 
 			return response.data
 		} catch (error) {
